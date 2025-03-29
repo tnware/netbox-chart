@@ -59,11 +59,16 @@ _load_yaml()
 
 provided_secret_name = os.getenv("SECRET_NAME", "netbox")
 
+# Attempt to load social auth secrets from the environment
+SOCIAL_AUTH_OIDC_KEY = os.environ.get("SOCIAL_AUTH_OIDC_KEY", "")
+SOCIAL_AUTH_OIDC_SECRET = os.environ.get("SOCIAL_AUTH_OIDC_SECRET", "")
+
 DATABASE["PASSWORD"] = _read_secret(provided_secret_name, "db_password")
 EMAIL["PASSWORD"] = _read_secret(provided_secret_name, "email_password")
 REDIS["tasks"]["PASSWORD"] = _read_secret(provided_secret_name, "redis_tasks_password")
 REDIS["caching"]["PASSWORD"] = _read_secret(provided_secret_name, "redis_cache_password")
 SECRET_KEY = _read_secret(provided_secret_name, "secret_key")
+
 
 # Post-process certain values
 CORS_ORIGIN_REGEX_WHITELIST = [re.compile(r) for r in CORS_ORIGIN_REGEX_WHITELIST]
